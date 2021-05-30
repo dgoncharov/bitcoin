@@ -254,9 +254,11 @@ define check_or_remove_sources
 endef
 
 check-packages:
-	@$(foreach package,$(all_packages),$(call check_or_remove_cached,$(package));)
+	$(foreach package,$(all_packages),$(call check_or_remove_cached,$(package));)
+	touch $@
 check-sources:
-	@$(foreach package,$(all_packages),$(call check_or_remove_sources,$(package));)
+	$(foreach package,$(all_packages),$(call check_or_remove_sources,$(package));)
+	touch $@
 
 $(host_prefix)/share/config.site: check-packages
 
@@ -283,4 +285,4 @@ download: download-osx download-linux download-win
 
 $(foreach package,$(all_packages),$(eval $(call ext_add_stages,$(package))))
 
-.PHONY: install cached clean clean-all download-one download-osx download-linux download-win download check-packages check-sources
+.PHONY: install cached clean clean-all download-one download-osx download-linux download-win download

@@ -234,11 +234,12 @@ $($(1)_cached): | $($(1)_dependencies) $($(1)_postprocessed)
 	$(AT)mv $$($(1)_staging_dir)/$$(@F) $$(@)
 	$(AT)rm -rf $($(1)_staging_dir)
 $($(1)_cached_checksum): $($(1)_cached)
+	touch $$@
 	$(AT)cd $$(@D); $(build_SHA256SUM) $$(<F) > $$(@)
 
-.PHONY: $(1)
 $(1): | $($(1)_cached_checksum)
-.SECONDARY: $($(1)_cached) $($(1)_postprocessed) $($(1)_staged) $($(1)_built) $($(1)_configured) $($(1)_preprocessed) $($(1)_extracted) $($(1)_fetched)
+	touch $$@
+.SECONDARY: $(1) $($(1)_cached) $($(1)_postprocessed) $($(1)_staged) $($(1)_built) $($(1)_configured) $($(1)_preprocessed) $($(1)_extracted) $($(1)_fetched)
 
 endef
 
